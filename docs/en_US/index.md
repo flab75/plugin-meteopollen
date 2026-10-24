@@ -22,6 +22,17 @@ or the Météo-France equipment's location for the Weather tile.
 
 - **Weather**: preferred source for “Rain in N min” (Météo-France then Open-Meteo, or the reverse).
 
+## Location copy (Weather tile)
+
+**Météo-France plugin defect**: each time its equipment is saved (Save button, change of object or visibility), it looks the
+town up again on api-adresse.data.gouv.fr. If that service is slow or does not answer, it erases the latitude, longitude and
+INSEE code, with no other sign than a line in its log; its tile then shows “Erreur de configuration”. Saving the Météo-France
+equipment again later usually fixes it. A message recalls it when Météo & Pollen is installed.
+
+With **Location copy** ticked on the Weather tile, the last complete location of the read equipment (town, postcode, INSEE,
+latitude, longitude, department) is kept and shown on the tile page, with its date. It is updated every 5 minutes when it
+changes; an emptied location does not overwrite it. Nothing is put back automatically.
+
 ## Updates
 
 - Pollen and today's chance of rain: every hour, or with the **Refresh** command.

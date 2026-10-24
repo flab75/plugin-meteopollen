@@ -95,4 +95,9 @@ $('#tu_type').on('change', function () {
 })
 function printEqLogic(_eqLogic) { // appelée par le core après chargement de l'équipement
   $('#tu_type').trigger('change')
+  var c = (_eqLogic.configuration || {}).loc, t = $('#tu_loc').empty()
+  if (!c || !c.loc) { if ((_eqLogic.configuration || {}).copie == 1) t.append($('<tr>').append($('<td>').text('{{Pas encore de copie}}'))); return }
+  var l = [['{{Équipement}}', c.nom], ['{{Copiée le}}', c.date], ['{{Commune}}', c.loc.ville], ['{{Code postal}}', c.loc.zip], ['{{Code INSEE}}', c.loc.insee],
+    ['{{Latitude}}', c.loc.lat], ['{{Longitude}}', c.loc.lon], ['{{Département}}', c.loc.numDept], ['{{Bulletin côte}}', c.loc.bulletinCote]]
+  l.forEach(function (x) { t.append($('<tr>').append($('<td>').text(x[0]), $('<td>').text(x[1] === undefined ? '' : x[1]))) })
 }

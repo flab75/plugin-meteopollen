@@ -22,6 +22,19 @@ ou celle de l'équipement Météo-France pour la tuile Météo.
 
 - **Météo** : source préférée pour « Pluie dans N min » (Météo-France, puis Open-Meteo, ou l'inverse).
 
+## Copie de la localisation (tuile Météo)
+
+**Défaut du plugin Météo-France** : à chaque sauvegarde de son équipement (bouton Sauvegarder, changement d'objet ou de
+visibilité), il refait la recherche de la commune sur api-adresse.data.gouv.fr. Si ce service est lent ou ne répond pas, il
+efface la latitude, la longitude et le code INSEE, sans autre signe qu'une ligne dans son log ; sa tuile affiche alors
+« Erreur de configuration ». Il suffit en général de sauvegarder à nouveau l'équipement Météo-France plus tard. Un message
+le rappelle à l'installation de Météo & Pollen.
+
+Option **Copie de la localisation** cochée sur la tuile Météo : la dernière localisation complète de l'équipement lu
+(commune, code postal, INSEE, latitude, longitude, département) est gardée et affichée sur la page de la tuile, avec sa date.
+Elle est mise à jour toutes les 5 minutes si elle change ; une localisation vidée ne l'écrase pas. Rien n'est remis
+automatiquement.
+
 ## Mises à jour
 
 - Pollens et risque de pluie du jour : toutes les heures, ou par la commande **Rafraîchir**.

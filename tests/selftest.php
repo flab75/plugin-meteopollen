@@ -7,6 +7,11 @@ $ok = function ($v, $m) { if (!$v) { echo "ECHEC : $m\n"; exit(1); } }; // asser
 $ok([meteopollen::niveau(0), meteopollen::niveau(0.1), meteopollen::niveau(2.5), meteopollen::niveau(8)] == [1, 2, 3, 4], 'niveaux de pluie');
 echo "niveaux OK\n";
 
+$a = ['geoloc' => '7', 'ville' => 'Noisy-le-Sec', 'zip' => '93130', 'insee' => '93053', 'lat' => 48.89, 'lon' => 2.45, 'numDept' => '93', 'bulletinCote' => 0];
+$ok(meteopollen::localisation($a) == array_diff_key($a, ['geoloc' => 0]), 'localisation complète copiée');
+$ok(meteopollen::localisation(['lat' => '', 'lon' => ''] + $a) === null, 'localisation vidée : pas de copie');
+echo "localisation OK\n";
+
 $admin = null; foreach (user::all() as $u) if ($u->getProfils() == 'admin') { $admin = $u; break; }
 foreach (eqLogic::byType('meteopollen') as $eq) {
   $d = $eq->donnees($admin);

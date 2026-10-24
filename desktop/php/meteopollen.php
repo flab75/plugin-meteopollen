@@ -150,6 +150,16 @@ $eqLogics = eqLogic::byType($plugin->getId());
 								</select></div>
 							</div>
 							<div class="form-group tu-t" data-t="meteo">
+								<label class="col-sm-4 control-label">{{Copie de la localisation}}
+									<sup><i class="fas fa-question-circle tooltips" title="{{Garde une copie consultable de la localisation de l'équipement Météo-France.}}"></i></sup>
+								</label>
+								<div class="col-sm-6">
+									<label class="checkbox-inline"><input type="checkbox" class="eqLogicAttr" data-l1key="configuration" data-l2key="copie">{{Activer}}</label>
+									<div class="alert alert-warning" style="margin:5px 0 0">{{Défaut du plugin Météo-France : à chaque sauvegarde de son équipement, il refait la recherche de la commune sur api-adresse.data.gouv.fr. Si ce service ne répond pas, il efface la latitude, la longitude et le code INSEE, et sa tuile affiche « Erreur de configuration ». Il suffit en général de sauvegarder à nouveau l'équipement Météo-France plus tard. Option cochée : la dernière localisation complète est gardée ici (mise à jour toutes les 5 minutes), pour la retrouver ; rien n'est remis automatiquement.}}</div>
+									<table class="table table-condensed" id="tu_loc" style="margin:5px 0 0"></table>
+								</div>
+							</div>
+							<div class="form-group tu-t" data-t="meteo">
 								<label class="col-sm-4 control-label">{{Source préférée pour la pluie dans l'heure}}
 								</label>
 								<div class="col-sm-6"><select class="eqLogicAttr form-control" data-l1key="configuration" data-l2key="sources">

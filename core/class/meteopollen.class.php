@@ -7,6 +7,7 @@ require_once __DIR__ . '/../../../../core/php/core.inc.php';
 class meteopollen extends eqLogic {
   const POLLENS = ['alder' => 'Aulne', 'birch' => 'Bouleau', 'olive' => 'Olivier', 'grass' => 'Graminées', 'mugwort' => 'Armoise', 'ragweed' => 'Ambroisie'];
   const SOURCE = ['meteo' => 'meteofrance']; // type de tuile → plugin de l'équipement lu
+  const LOC = ['ville', 'zip', 'insee', 'lat', 'lon', 'numDept', 'bulletinCote']; // localisation d'un équipement Météo-France
 
   private static function chaque($type, $f) { // une tuile en erreur n'empêche pas les autres
     foreach (self::byType('meteopollen', true) as $eq) {
@@ -15,7 +16,7 @@ class meteopollen extends eqLogic {
     }
   }
 
-  public static function cron5() { self::chaque('meteo', 'pluieHeure'); }
+  public static function cron5() { self::chaque('meteo', 'pluieHeure'); self::chaque('meteo', 'copier'); }
   public static function cronHourly() { self::chaque('', 'maj'); }
 
   // commandes propres : logicalId => [nom, sous-type, unité, historisée]
@@ -40,6 +41,7 @@ class meteopollen extends eqLogic {
       $c->setEqLogic_id($this->getId()); $c->setLogicalId($k); $c->setName($nom); $c->setType('info'); $c->setSubType($sub);
       $c->setUnite($unite); $c->setIsHistorized($hist); $c->setIsVisible(0); $c->save();
     }
+    $this->copier();
     if ($l && !is_object($this->getCmd('action', 'refresh'))) {
       $c = new meteopollenCmd();
       $c->setEqLogic_id($this->getId()); $c->setLogicalId('refresh'); $c->setName(__('Rafraîchir', __FILE__));
@@ -62,6 +64,34 @@ class meteopollen extends eqLogic {
     $s = $this->source();
     if ($s && $s->getConfiguration('lat') !== '') return [$s->getConfiguration('lat'), $s->getConfiguration('lon')];
     return [config::byKey('info::latitude'), config::byKey('info::longitude')];
+  }
+
+  /* Défaut du plugin Météo-France : à chaque sauvegarde de son équipement (preSave → getInsee), il refait la recherche de la
+     commune sur api-adresse.data.gouv.fr ; si ce service est lent ou en panne, il efface lat / lon / insee sans prévenir.
+     D'où une copie consultable (option « copie » de la tuile Météo), pour pouvoir la retrouver. Rien n'est remis automatiquement. */
+  public static function localisation(array $cfg) { // localisation complète de la configuration d'un équipement Météo-France, sinon null
+    if (($cfg['lat'] ?? '') === '' || ($cfg['lon'] ?? '') === '') return null;
+    $loc = [];
+    foreach (self::LOC as $k) $loc[$k] = $cfg[$k] ?? '';
+    return $loc;
+  }
+
+  public function copier() { // localisation vidée : la dernière copie reste
+    $s = $this->source();
+    if (!$s || !$this->getConfiguration('copie', 0)) return;
+    $loc = self::localisation($s->getConfiguration());
+    $c = $this->getConfiguration('loc', []);
+    if (!$loc || (is_array($c) && ($c['eq'] ?? '') == $s->getId() && ($c['loc'] ?? null) == $loc)) return;
+    $this->setConfiguration('loc', ['eq' => $s->getId(), 'nom' => $s->getHumanName(), 'date' => date('Y-m-d H:i'), 'loc' => $loc]);
+    $this->save(true); // sans hooks : appelé aussi depuis postSave
+  }
+
+  public static function avertir() { // à l'installation : seulement s'il y a des équipements Météo-France
+    try { $mf = eqLogic::byType('meteofrance'); } catch (Throwable $e) { return false; }
+    if (!$mf) return false;
+    foreach (self::byType('meteopollen') as $eq) if ($eq->getConfiguration('type') == 'meteo' && $eq->getConfiguration('copie', 0)) return false;
+    message::add('meteopollen', __('Plugin Météo-France : à chaque sauvegarde d\'un de ses équipements, il refait la recherche de la commune sur api-adresse.data.gouv.fr ; si ce service ne répond pas, il efface la latitude, la longitude et le code INSEE, et sa tuile affiche « Erreur de configuration ». Météo & Pollen peut en garder une copie consultable : cocher « Copie de la localisation » dans votre tuile Météo.', __FILE__));
+    return true;
   }
 
   private static function json($url) {

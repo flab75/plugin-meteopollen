@@ -1,7 +1,7 @@
 {
 	"id": "meteopollen",
 	"name": "Météo & Pollen",
-	"pluginVersion": "0.1",
+	"pluginVersion": "0.2",
 	"description": {
 		"fr_FR": "Deux tuiles prêtes à poser sur le dashboard : pollens du jour, et météo avec pluie dans l'heure.",
 		"en_US": "Two ready-made dashboard tiles: today's pollen, and weather with rain within the hour."
