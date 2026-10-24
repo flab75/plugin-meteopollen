@@ -1,0 +1,35 @@
+{
+	"id": "meteopollen",
+	"name": "Météo & Pollen",
+	"pluginVersion": "0.1",
+	"description": {
+		"fr_FR": "Deux tuiles prêtes à poser sur le dashboard : pollens du jour, et météo avec pluie dans l'heure.",
+		"en_US": "Two ready-made dashboard tiles: today's pollen, and weather with rain within the hour."
+	},
+	"licence": "MIT",
+	"author": "flab",
+	"require": "4.4",
+	"os": {
+		"min": 11,
+		"max": 12.99
+	},
+	"category": "weather",
+	"hasDependency": false,
+	"hasOwnDeamon": false,
+	"changelog_beta": "https://github.com/flab75/plugin-meteopollen/blob/beta/docs/#language#/changelog.md",
+	"documentation_beta": "https://github.com/flab75/plugin-meteopollen/blob/beta/docs/#language#/index.md",
+	"changelog": "https://github.com/flab75/plugin-meteopollen/blob/master/docs/#language#/changelog.md",
+	"documentation": "https://github.com/flab75/plugin-meteopollen/blob/master/docs/#language#/index.md",
+	"language": [
+		"fr_FR",
+		"en_US"
+	],
+	"compatibility": [
+		"diy",
+		"docker",
+		"rpi",
+		"luna",
+		"atlas",
+		"smart"
+	]
+}
