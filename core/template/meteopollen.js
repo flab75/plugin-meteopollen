@@ -66,7 +66,7 @@ if (!window.meteopollen) (function () {
         return '<div style="display:flex;gap:2px;height:8px;margin-top:3px"><span style="flex:none;width:18px;font-size:8px;line-height:8px;opacity:.6;text-align:left">' + nom + '</span>' + seg + '</div>'
       }
       return {txt: !p ? "{{Pluie dans l'heure indisponible}}" : !q ? "{{Pas de pluie dans l'heure}}" : dans == 0 ? "{{Pluie en ce moment}}" : "{{Pluie dans}} " + dans + ' min',
-        html: (a.c('Rainheure') ? ligne(S[0], 'MF') : '') + ligne(S[1], 'OM') + '<div style="display:flex;justify-content:space-between;font-size:9px;opacity:.6;padding-left:20px"><span>' + hm(now) + '</span><span>+30 min</span><span>' + hm(now + 60) + '</span></div>'}
+        html: ordre.map(function (n) { return n == 'OM' ? ligne(S[1], 'OM') : a.c('Rainheure') ? ligne(S[0], 'MF') : '' }).join('') + '<div style="display:flex;justify-content:space-between;font-size:9px;opacity:.6;padding-left:20px"><span>' + hm(now) + '</span><span>+30 min</span><span>' + hm(now + 60) + '</span></div>'}
     }
     b.querySelector('.tu-al').insertAdjacentHTML('beforebegin', '<div class="tu-ph" style="width:100%;max-width:260px;margin:2px 0 4px"></div><span class="tu-l tu-l3"></span><span class="tu-l tu-l4"></span><span class="tu-l tu-l5"></span>')
     function maj() {

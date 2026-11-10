@@ -20,7 +20,7 @@ ou celle de l'équipement Météo-France pour la tuile Météo.
 
 ## Réglages
 
-- **Météo** : source préférée pour « Pluie dans N min » (Météo-France, puis Open-Meteo, ou l'inverse).
+- **Météo** : source préférée pour « Pluie dans N min » (Météo-France, puis Open-Meteo, ou l'inverse) ; les barres suivent le même ordre.
 
 ## Copie de la localisation (tuile Météo)
 
